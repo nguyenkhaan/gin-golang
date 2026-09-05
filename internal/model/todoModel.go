@@ -6,8 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type TodoModel struct {
-	gorm.Model 
+type TodoModel struct { 
 	ID uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	Title string 
 	Content string `gorm:"default:''"`
