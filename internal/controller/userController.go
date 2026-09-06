@@ -3,58 +3,34 @@ package controller
 import (
 	"cloudian/cloudian-restful/internal/dto"
 
-	"github.com/gin-gonic/gin"
+	"github.com/go-fuego/fuego"
 )
 
-func GetAllUsers(ctx *gin.Context) {
-	var query dto.GetAllUserQuery 
-	//Su dung dto de co the thuc hien Biding du lieu truyen den 
-	if err := ctx.ShouldBindQuery(&query); err != nil {
-		ctx.JSON(400, gin.H{
-			"error": err.Error(), 
-		})
-		return 
-	}
-	ctx.JSON(200 , gin.H{
-		"message": "Get all users", 
-	})
+func GetAllUsers(ctx fuego.ContextWithParams[dto.GetAllUserQuery]) (map[string]any , error) {
+	limit := ctx.QueryParam("limit") 
+	offset := ctx.QueryParam("offset")  
+	println(limit) 
+	println(offset) 
+	//Hoc co the duc toasn bo struct params thong qua ctx.Params() 
+	params, err := ctx.Params() 
+	println(params) 
+	println(err) 
+	return map[string]any{
+		"message": "Cloudian Love Cloud", 
+	}, nil
 }
 
-func GetDetailUser(ctx *gin.Context) {
-	
-	var param dto.GetDetailUserParam 
-	if err := ctx.ShouldBindUri(&param); err != nil {
-		ctx.JSON(400, gin.H{
-			"error": err.Error(), 
-		})
-		return 
-	}
-	ctx.JSON(200, gin.H{
-		"message": "List user detail information", 
-	})
-} 
-
-func CreateUser(ctx *gin.Context) {
-	var request dto.CreateUserDto 
-	if err := ctx.ShouldBindBodyWithJSON(&request); err != nil {
-		ctx.JSON(400 , gin.H{
-			"error": err.Error(), 
-		}) 
-		return 
-	}
-	ctx.JSON(201, gin.H{
-		"message": "Create a new user", 
-	})
+//ContextWithParams, ContextWithBody, ContextWithNoBody -> Parameter, Body (JSON), NoBody (No JSON)
+func GetDetailUser(ctx fuego.ContextWithParams[dto.GetDetailUserParam]) (map[string]any , error) {
+	return map[string]any{
+		"message": "Cloudian Love Cloud", 
+	}, nil
 }
 
-func UpdateUser(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{
-		"message": "Update user information", 
-	})
-}
-
-func DeleteUser(ctx *gin.Context) {
-	ctx.JSON(200, gin.H{
-		"message": "Delete user successfully", 
-	})
+func CreateUser(ctx fuego.ContextWithBody[map[string]any]) (map[string]any , error) {
+	//QueryParam, PathParam, Body 
+	body, err := ctx.Body() 
+	println(body) 
+	println(err) 
+	return body, nil 
 }
